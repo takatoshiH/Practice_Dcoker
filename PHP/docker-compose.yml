@@ -1,0 +1,23 @@
+#conposeファイルのバージョンを明記する
+version: "3"
+
+#コンテナのインストール内容が書かれる
+services:
+  nginx:
+#    nginxのコンテナはcomposeファイルでインストールする
+    image: nginx:stable-alpine
+
+#    コンテナ側のポートの設定と、ローカル側のポートの設定
+    ports:
+      - "8080:80"
+    # ローカル側のディレクトリの内容をコンテナにマウントする設定
+    # ローカルの./srcを/var/www/htmlにマウントする
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  php:
+    # 作成したDockerfileの場所を示す
+    build: ./php
+    volumes:
+      - ./src:/var/www/html
